@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 250.0
-const JUMP_VELOCITY = -450.0
+const JUMP_VELOCITY = -500.0
 const  DASH_SPEED = 650.0
 var dashing = false
 var can_dash = true
@@ -11,7 +11,7 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 	if velocity.y > 0:
-		velocity += get_gravity() * delta * 1.15
+		velocity += get_gravity() * delta * 1.25
 	
 	# Handle Jump, Coyote Time, and Jump Buffering
 	if is_on_floor():
@@ -22,7 +22,7 @@ func _physics_process(delta: float) -> void:
 		
 		
 	if Input.is_action_just_released("Jump") and velocity.y < 0:
-		velocity.y = JUMP_VELOCITY / 6
+		velocity.y = JUMP_VELOCITY / 10
 		
 	if not is_on_floor() and Input.is_action_just_pressed("Jump"):
 		$BufferedJump.start()
@@ -32,15 +32,17 @@ func _physics_process(delta: float) -> void:
 	# Roll Jumping
 	if dashing and Input.is_action_just_pressed("Jump"):
 		velocity.y = JUMP_VELOCITY
-		velocity.x = DASH_SPEED
-	
+		velocity.x = DASH_SPEED 
+		$RollTimer.start()
+		can_dash = true
+		
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("Move_Left", "Move_Right")
 	if direction:
 		if dashing:
 			velocity.x = direction * DASH_SPEED
 		else:
-			velocity.x = move_toward(velocity.x, direction * SPEED, 70) #acceleration
+			velocity.x = move_toward(velocity.x, direction * SPEED, 20) #acceleration
 	else:
 		velocity.x = move_toward(velocity.x, 0, 20) #momemtum
 	
@@ -48,6 +50,13 @@ func _physics_process(delta: float) -> void:
 	if is_on_floor() and can_dash and Input.is_action_just_pressed("Roll") and direction:
 		dashing = true
 		can_dash = false
+		$RollTimer.start()
+		$RollAgainTimer.start()
+	
+	if not is_on_floor() and Input.is_action_just_pressed("Roll") and direction:
+		$BufferedRoll.start()
+	if is_on_floor() and not $BufferedRoll.is_stopped():
+		dashing = true
 		$RollTimer.start()
 		$RollAgainTimer.start()
 	
