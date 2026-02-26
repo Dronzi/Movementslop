@@ -1,0 +1,112 @@
+[gd_scene load_steps=8 format=3 uid="uid://ckxeyqjfr2mdx"]
+
+[sub_resource type="GDScript" id="GDScript_v62h7"]
+script/source = "extends CharacterBody2D
+
+var gravity = ProjectSettings.get_setting(\"physics/2d/default_gravity\")
+
+enum State {NEUTRAL, JUMPING, FALLING, ROLLING}
+const STATE_NAMES = [\"Neutral\", \"Jumping\", \"Falling\", \"Rolling\"]
+
+var current_state = State.NEUTRAL
+
+@export var max_velocity = Vector2(1000, 1000)
+@export var move_speed = Vector2(400, 500)
+@export var fast_fall = 0
+@export var slow_fall = 0
+@export var max_jump_time = 0.2
+@export var min_jump_time = 0.05
+
+@export var roll_speed = 800
+
+var jump_time = 0
+
+func _process(delta: float) -> void:
+	match current_state:
+		State.NEUTRAL: 
+			modulate = Color(\"FFA800\")
+		State.JUMPING:
+			modulate = Color(\"C1E1C1\")
+		State.FALLING:
+			modulate = Color(\"E1C1E1\")
+		State.ROLLING:
+			modulate = Color(\"C1D1E1\")
+
+func _physics_process(delta: float) -> void:
+	velocity.y += gravity * delta
+
+	if current_state == State.JUMPING:
+		if Input.is_action_pressed(\"jump\") or max_jump_time - jump_time < min_jump_time:
+			if jump_time <= 0:
+				if velocity.y >= 0:
+					current_state = State.FALLING
+			else:
+				jump_time -= delta
+				velocity.y = -move_speed.y
+		else:
+			velocity.y = 0
+			current_state = State.FALLING
+		if is_on_floor():
+			current_state = State.NEUTRAL
+	elif current_state == State.FALLING:
+		if Input.is_action_pressed(\"down\"):
+			velocity.y += fast_fall
+		if is_on_floor():
+			current_state = State.NEUTRAL
+	
+	if BufferedInput.is_action_just_pressed(\"jump\") and is_on_floor():
+		velocity.y = -move_speed.y
+		current_state = State.JUMPING
+		jump_time = max_jump_time
+	
+	var horiz_input = -int(Input.is_action_pressed(\"left\")) + int(Input.is_action_pressed(\"right\"))
+	velocity.x = horiz_input*move_speed.x
+	
+	velocity.x = clamp(velocity.x, -max_velocity.x, max_velocity.x)
+	velocity.y = clamp(velocity.y, -max_velocity.y, max_velocity.y)
+	move_and_slide()
+"
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_v62h7"]
+
+[sub_resource type="Gradient" id="Gradient_qrja6"]
+offsets = PackedFloat32Array(0, 0.006666667)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_co24e"]
+gradient = SubResource("Gradient_qrja6")
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrja6"]
+size = Vector2(884, 76)
+
+[sub_resource type="Gradient" id="Gradient_feb8i"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kj3p2"]
+gradient = SubResource("Gradient_feb8i")
+fill_from = Vector2(1, 0)
+
+[node name="testing" type="Node2D"]
+
+[node name="Character" type="CharacterBody2D" parent="."]
+input_pickable = true
+script = SubResource("GDScript_v62h7")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Character"]
+position = Vector2(552, 427)
+shape = SubResource("CapsuleShape2D_v62h7")
+debug_color = Color(0.9000571, 0.20471972, 0.593612, 0.41960785)
+
+[node name="Sprite2D" type="Sprite2D" parent="Character/CollisionShape2D"]
+position = Vector2(-2.7149916e-05, 0.39517495)
+scale = Vector2(0.3124997, 0.4251514)
+texture = SubResource("GradientTexture2D_co24e")
+
+[node name="floor" type="StaticBody2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
+position = Vector2(554, 487)
+shape = SubResource("RectangleShape2D_qrja6")
+
+[node name="Sprite2D" type="Sprite2D" parent="floor/CollisionShape2D"]
+position = Vector2(-1.5000229, 0.50000095)
+scale = Vector2(13.890624, 1.2343754)
+texture = SubResource("GradientTexture2D_kj3p2")

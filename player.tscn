@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://ckudr8chj1kgo"]
+
+[ext_resource type="Script" uid="uid://ceqlc72ere4lv" path="res://player.gd" id="1_4flbx"]
+
+[sub_resource type="Gradient" id="Gradient_qrja6"]
+offsets = PackedFloat32Array(0, 0.006666667)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4flbx"]
+gradient = SubResource("Gradient_qrja6")
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_onrkg"]
+radius = 9.0
+height = 27.580654
+
+[node name="Player" type="CharacterBody2D"]
+script = ExtResource("1_4flbx")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(-9.298325e-06, 0.60484505)
+scale = Vector2(0.3124997, 0.4251514)
+texture = SubResource("GradientTexture2D_4flbx")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(-7.05719e-05, 0.20967293)
+scale = Vector2(0.99999994, 1)
+shape = SubResource("CapsuleShape2D_onrkg")
+debug_color = Color(0.9000571, 0.20471972, 0.593612, 0.41960785)
+
+[node name="BufferedJump" type="Timer" parent="."]
+wait_time = 0.07
+one_shot = true
+
+[node name="CoyoteTimer" type="Timer" parent="."]
+wait_time = 0.14
+one_shot = true
+
+[node name="RollTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="RollAgainTimer" type="Timer" parent="."]
+wait_time = 0.7
+
+[connection signal="timeout" from="RollTimer" to="." method="_on_timer_timeout"]
+[connection signal="timeout" from="RollAgainTimer" to="." method="_on_roll_again_timer_timeout"]

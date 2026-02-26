@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://ckxeyqjfr2mdx"]
+
+[ext_resource type="PackedScene" uid="uid://ckudr8chj1kgo" path="res://player.tscn" id="1_qrja6"]
+[ext_resource type="Texture2D" uid="uid://csm50g7ow87gb" path="res://simple64x_tiles6.png" id="2_co24e"]
+
+[sub_resource type="Gradient" id="Gradient_feb8i"]
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_kj3p2"]
+gradient = SubResource("Gradient_feb8i")
+fill_from = Vector2(1, 0)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_co24e"]
+size = Vector2(885, 80)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_qrja6"]
+size = Vector2(128, 32.5)
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_feb8i"]
+texture = ExtResource("2_co24e")
+texture_region_size = Vector2i(64, 64)
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+1:0/0 = 0
+1:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+2:0/0 = 0
+2:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+3:0/0 = 0
+4:0/0 = 0
+0:1/0 = 0
+0:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+1:1/0 = 0
+1:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+2:1/0 = 0
+2:1/0/physics_layer_0/polygon_0/points = PackedVector2Array(-32, -32, 32, -32, 32, 32, -32, 32)
+3:1/0 = 0
+4:1/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_kj3p2"]
+tile_size = Vector2i(64, 64)
+physics_layer_0/collision_layer = 1
+sources/0 = SubResource("TileSetAtlasSource_feb8i")
+
+[node name="testing" type="Node2D"]
+
+[node name="Player" parent="." instance=ExtResource("1_qrja6")]
+position = Vector2(901, -20)
+
+[node name="Camera2D" type="Camera2D" parent="Player"]
+
+[node name="floor" type="StaticBody2D" parent="."]
+position = Vector2(891, 39)
+
+[node name="Sprite2D" type="Sprite2D" parent="floor"]
+position = Vector2(-1.5, -0.5)
+scale = Vector2(13.890624, 1.2656251)
+texture = SubResource("GradientTexture2D_kj3p2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="floor"]
+position = Vector2(-1.5, -1)
+shape = SubResource("RectangleShape2D_co24e")
+
+[node name="platform" type="StaticBody2D" parent="."]
+position = Vector2(1067, -101)
+
+[node name="Sprite2D" type="Sprite2D" parent="platform"]
+scale = Vector2(1.9999998, 0.5078124)
+texture = SubResource("GradientTexture2D_kj3p2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform"]
+shape = SubResource("RectangleShape2D_qrja6")
+
+[node name="platform2" type="StaticBody2D" parent="."]
+position = Vector2(731, -102)
+
+[node name="Sprite2D" type="Sprite2D" parent="platform2"]
+scale = Vector2(1.9999998, 0.5078124)
+texture = SubResource("GradientTexture2D_kj3p2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform2"]
+shape = SubResource("RectangleShape2D_qrja6")
+
+[node name="platform3" type="StaticBody2D" parent="."]
+position = Vector2(903, -169)
+
+[node name="Sprite2D" type="Sprite2D" parent="platform3"]
+scale = Vector2(1.9999998, 0.5078124)
+texture = SubResource("GradientTexture2D_kj3p2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="platform3"]
+shape = SubResource("RectangleShape2D_qrja6")
+
+[node name="TileMap" type="TileMap" parent="."]
+tile_set = SubResource("TileSet_kj3p2")
+format = 2
+layer_0/tile_data = PackedInt32Array(524286, 0, 0, 524287, 0, 0, 458752, 0, 0, 458753, 0, 0, 458754, 0, 0, 458755, 0, 0, 524291, 0, 0, 524292, 0, 0, 524293, 0, 0, 458757, 0, 0, 458758, 0, 0, 458759, 0, 0, 458760, 0, 0, 524296, 0, 0, 524297, 0, 0, 524298, 0, 0, 524299, 0, 0, 524300, 0, 0, 524301, 0, 0, 524302, 0, 0, 524303, 0, 0, 524304, 0, 0, 524305, 0, 0, 524306, 0, 0, 458756, 0, 0, 524290, 0, 0, 524289, 0, 0, 524288, 0, 0, 589822, 0, 0, 589823, 0, 0, 524294, 0, 0, 524295, 0, 0, 458769, 0, 0, 458770, 0, 0, 458771, 0, 0, 458772, 0, 0, 458773, 0, 0, 393237, 0, 0, 393238, 0, 0, 393239, 0, 0, 524307, 0, 0, 524308, 0, 0, 458774, 0, 0, 393240, 0, 0, 393241, 0, 0, 393242, 0, 0, 393243, 0, 0, 458777, 0, 0, 458778, 0, 0, 458779, 0, 0, 458775, 0, 0, 458776, 0, 0, 524309, 0, 0, 524310, 0, 0, 589832, 0, 0, 589833, 0, 0, 589834, 0, 0, 589835, 0, 0, 589836, 0, 0, 589837, 0, 0, 589838, 0, 0, 589839, 0, 0, 589840, 0, 0, 589841, 0, 0, 589842, 0, 0, 589843, 0, 0, 589828, 0, 0, 589829, 0, 0, 589830, 0, 0, 589831, 0, 0, 524285, 0, 0, 589821, 0, 0, 524284, 0, 0, 589820, 0, 0, 589819, 0, 0, 524283, 0, 0, 589818, 0, 0, 524282, 0, 0, 524281, 0, 0, 589817, 0, 0, 393246, 0, 0, 393247, 0, 0, 393248, 0, 0, 393249, 0, 0, 393250, 0, 0, 458786, 0, 0, 458785, 0, 0, 458784, 0, 0, 458783, 0, 0, 458782, 0, 0, 327718, 0, 0, 327717, 0, 0, 327716, 0, 0, 327719, 0, 0, 262184, 0, 0, 262185, 0, 0, 262186, 0, 0, 262187, 0, 0, 262188, 0, 0, 262189, 0, 0, 262190, 0, 0, 327729, 0, 0, 327730, 0, 0, 327731, 0, 0, 327732, 0, 0, 393267, 0, 0, 393266, 0, 0, 393265, 0, 0, 393268, 0, 0, 262199, 0, 0, 327735, 0, 0, 327736, 0, 0, 327737, 0, 0, 327738, 0, 0, 262202, 0, 0, 262201, 0, 0, 262200, 0, 0, 393252, 0, 0, 393253, 0, 0, 393254, 0, 0, 393255, 0, 0, 327720, 0, 0, 327721, 0, 0, 327722, 0, 0, 327723, 0, 0, 327724, 0, 0, 327725, 0, 0, 327726, 0, 0, 196669, 0, 0, 196670, 0, 0, 196671, 0, 0, 196672, 0, 0, 262205, 0, 0, 262206, 0, 0, 262207, 0, 0, 262208, 0, 0, 196673, 0, 0, 196674, 0, 0, 196675, 0, 0, 196676, 0, 0, 196677, 0, 0, 196678, 0, 0, 262214, 0, 0, 262215, 0, 0, 262216, 0, 0, 262217, 0, 0, 262218, 0, 0, 262219, 0, 0, 327756, 0, 0, 327757, 0, 0, 327758, 0, 0, 327759, 0, 0, 262209, 0, 0, 262210, 0, 0, 262211, 0, 0, 262212, 0, 0, 262213, 0, 0, 327750, 0, 0, 327751, 0, 0, 327752, 0, 0, 327753, 0, 0, 327754, 0, 0, 327755, 0, 0, 393292, 0, 0, 393293, 0, 0, 393294, 0, 0, 393295, 0, 0, 327760, 0, 0, 327761, 0, 0, 393298, 0, 0, 393299, 0, 0, 393297, 0, 0, 393296, 0, 0, 327762, 0, 0, 327763, 0, 0, 327764, 0, 0, 393300, 0, 0, 327765, 0, 0, 262229, 0, 0, 196693, 0, 0, 131157, 0, 0, 65621, 0, 0, 85, 0, 0, 589816, 0, 0, 524280, 0, 0, 458744, 0, 0, 393208, 0, 0, 327672, 0, 0, 262136, 0, 0, 196600, 0, 0)
