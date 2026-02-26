@@ -5,7 +5,6 @@ const JUMP_VELOCITY = -450.0
 const  DASH_SPEED = 650.0
 var dashing = false
 var can_dash = true
-var jumping = false
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -20,7 +19,7 @@ func _physics_process(delta: float) -> void:
 	if not $CoyoteTimer.is_stopped() and Input.is_action_just_pressed("Jump"):
 		velocity.y = JUMP_VELOCITY
 		$CoyoteTimer.stop()
-		jumping = true
+		
 		
 	if Input.is_action_just_released("Jump") and velocity.y < 0:
 		velocity.y = JUMP_VELOCITY / 6
@@ -29,13 +28,11 @@ func _physics_process(delta: float) -> void:
 		$BufferedJump.start()
 	if is_on_floor() and not $BufferedJump.is_stopped():
 		velocity.y = JUMP_VELOCITY
-		jumping = true
 		
 	# Roll Jumping
 	if dashing and Input.is_action_just_pressed("Jump"):
 		velocity.y = JUMP_VELOCITY
 		velocity.x = DASH_SPEED
-		jumping = true
 	
 	# Get the input direction and handle the movement/deceleration.
 	var direction := Input.get_axis("Move_Left", "Move_Right")
