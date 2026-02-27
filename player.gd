@@ -20,7 +20,6 @@ func _physics_process(delta: float) -> void:
 		velocity.y = JUMP_VELOCITY
 		$CoyoteTimer.stop()
 		
-		
 	if Input.is_action_just_released("Jump") and velocity.y < 0:
 		velocity.y = JUMP_VELOCITY / 10
 		
